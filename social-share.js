@@ -1,8 +1,7 @@
 "use strict";
 var Sharing = {
     pageuri: App.rootUrl,
-    userId: null,
-    network: null,
+    userInfo: {},
 
     init: function () {
         var vkontakte = function(appId) {
@@ -54,8 +53,7 @@ var Sharing = {
 
             VK.Auth.getLoginStatus(function(response) {
                 if (response.session) {
-                    self.userId = response.session.mid;
-                    console.log(self.userId);
+                    self.userInfo.userId = response.session.mid;
                 }
             });
         }.bind(this);
@@ -80,6 +78,14 @@ var Sharing = {
             return $(".js-vk_count").text(t);
         }, $.getJSON("//vk.com/share.php?act=count&index=1&url=" + this.pageuri + "&format=json&callback=?");
     },
+    resetUserInfo: function () {
+        this.userInfo = {};
+    },
+    _openUserInfoPopup: function () {
+    },
+    _saveUserInfo: function () {
+        console.log(this.userInfo);
+    },
     _share: function (baseUrl, params, callback) {
         var url = baseUrl + "?" + $.param(params);
         this.window = window.open(url, "Sharing", "width=740,height=440");
@@ -97,6 +103,7 @@ $(function () {
     $(document).on("click", ".js-share", function () {
         var network = $(this).data("network");
         if ("function" == typeof Sharing[network]) {
+            Sharing.resetUserInfo();
             Sharing[network]({
                 url: location.href,
                 title: App.metaTags.title,
