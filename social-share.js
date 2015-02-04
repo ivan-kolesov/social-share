@@ -1,6 +1,46 @@
 "use strict";
 var Sharing = {
     pageuri: App.rootUrl,
+    userId: null,
+    network: null,
+
+    init: function () {
+        var vkontakte = function(appId) {
+            window.vkAsyncInit = function() {
+                VK.init({
+                    apiId: appId
+                });
+            };
+            setTimeout(function() {
+                var el = document.createElement("script");
+                el.type = "text/javascript";
+                el.src = "//vk.com/js/api/openapi.js";
+                el.async = true;
+                document.getElementById("vk_api_transport").appendChild(el);
+            }, 0);
+        };
+
+        var fb = function(appId) {
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId      : appId,
+                    xfbml      : true,
+                    status     : true,
+                    version    : 'v2.2'
+                });
+            };
+            (function(d, s, id){
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        };
+
+        vkontakte(App.metaTags.vkontakte_app_id);
+        fb(App.metaTags.fb_app_id);
+    },
     facebook: function (options, callback) {
         callback = function() {
             this.fbCount();
@@ -10,7 +50,14 @@ var Sharing = {
     },
     vkontakte: function (options, callback) {
         callback = function() {
-            this.vkCount();
+            var self = this;
+
+            VK.Auth.getLoginStatus(function(response) {
+                if (response.session) {
+                    self.userId = response.session.mid;
+                    console.log(self.userId);
+                }
+            });
         }.bind(this);
 
         return this._share("//vk.com/share.php", {
@@ -58,4 +105,6 @@ $(function () {
             });
         }
     });
+
+    Sharing.init();
 });

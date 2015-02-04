@@ -11,33 +11,22 @@
             title: "Заголовок статьи",
             description:"Описание статьи",
             image:"http://www.aviasales.ru/promo/cities/uploads/share_photo/image/2_15.jpg",
-            vkontakte_image:"http://www.aviasales.ru/promo/cities/uploads/share_photo/image/vkontakte_2_15.jpg"
+            vkontakte_image:"http://www.aviasales.ru/promo/cities/uploads/share_photo/image/vkontakte_2_15.jpg",
+            vkontakte_app_id:4751704,
+            fb_app_id:782954385087517
         };
     </script>
     <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://vk.com/js/api/share.js?90" charset="windows-1251"></script>
     <script src="/social-share.js" type="text/javascript"></script>
-
-
-    <script type="text/javascript">
-        "use strict";
-        function test() {
-            var a, n;
-            return a = "ttt", nothing(a);
-        }
-
-        function nothing(a) {
-            return a;
-        }
-
-        console.log(test());
-    </script>
 </head>
 <body>
 
-    <div class="icon vk js-share" data-network="vkontakte" data-target="share_vk" role="share ya-target">VK</div>
+    <div id="vk_api_transport"></div>
+    <div class="icon vk js-share" data-network="vkontakte" data-target="share_vk">VK</div>
     <div class="js-vk_count">0</div>
 
-    <div class="icon fb js-share" data-network="facebook" data-target="share_fb" role="share ya-target">FB</div>
+    <div class="icon fb js-share" data-network="facebook" data-target="share_fb">FB</div>
     <div class="js-fb_count">0</div>
 
 </body>
