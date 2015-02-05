@@ -7,12 +7,16 @@
 
     <script type="text/javascript">
         window.App = window.App || {};
-        App.rootUrl = "https://mediamarkt.ru/promo/discount";
     </script>
     <script src="/social-share.js" type="text/javascript"></script>
     <script src="/social-share-manager.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function () {
+            Sharing.init({
+                vkontakte_app_id:4751704,
+                facebook_app_id:782954385087517
+            });
+
             $(document).on("click", ".js-share", function () {
                 var network = $(this).data("network");
                 if ("function" == typeof Sharing[network]) {
@@ -21,7 +25,7 @@
                     SharingManager.setArticle(socialData.data('article'));
 
                     Sharing[network]({
-                        url: location.href,
+                        url: location.href + '#' + socialData.data('article'),
                         title: socialData.data('title'),
                         message: socialData.data('message'),
                         image: socialData.data('image')
@@ -29,9 +33,14 @@
                 }
             });
 
-            Sharing.init({
-                vkontakte_app_id:4751704,
-                facebook_app_id:782954385087517
+            $(".js-fb_count").each(function() {
+                var socialData = $(this).closest(".js-social-share-data");
+                Sharing.fbCount({url: location.href + '#' + socialData.data('article'), self: $(this)});
+            });
+
+            $(".js-vk_count").each(function() {
+                var socialData = $(this).closest(".js-social-share-data");
+                Sharing.vkCount({url: location.href + '#' + socialData.data('article'), self: $(this)});
             });
         });
     </script>
@@ -43,6 +52,7 @@
     <div id="fb-root"></div>
 
     <ul>
+        <a name="884843"></a>
         <li class="js-social-share-data"
             data-article="884843"
             data-title="Заголовок статьи"
@@ -57,6 +67,7 @@
             <div class="js-fb_count">0</div>
         </li>
 
+        <a name="5435345"></a>
         <li class="js-social-share-data"
             data-article="5435345"
             data-title="Заголовок статьи 5435345"

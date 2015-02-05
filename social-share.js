@@ -1,7 +1,6 @@
 "use strict";
 var Sharing = {
     options: {},
-    pageuri: App.rootUrl,
 
     init: function (options) {
         this.options = options || {};
@@ -58,18 +57,24 @@ var Sharing = {
             image: options.image
         }, callback);
     },
-    fbCount: function () {
-        return $.getJSON("//graph.facebook.com/?id=" + this.pageuri, function (response) {
-            return $(".js-fb_count").text(response.shares);
-        })
+    fbCount: function (options) {
+        $.getJSON("//graph.facebook.com/?id=" + options.url, function (response) {
+            console.log(response);
+            options.self.text(response.shares || 0);
+        });
     },
-    vkCount: function () {
+    vkCount: function (options) {
         window.VK = {};
         VK.Share = {};
+        VK.Share.count = function (index, count) {
+            console.log(index, count);
+            //options.self.text(response.shares || 0);
+        };
 
-        return VK.Share.count = function (e, t) {
-            return $(".js-vk_count").text(t);
-        }, $.getJSON("//vk.com/share.php?act=count&index=1&url=" + this.pageuri + "&format=json&callback=?");
+        $.ajax({
+            url: '//vk.com/share.php?act=count&index=1&url=' + options.url + '&callback=?',
+            dataType: "jsonp"
+        });
     },
     _share: function (baseUrl, params, callback) {
         var url = baseUrl + "?" + $.param(params);
