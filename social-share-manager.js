@@ -42,13 +42,11 @@ var SharingManager = {
                     });
                 };
             case "facebook":
-                return function() {
-                    FB.getLoginStatus(function(response) {
-                        console.log(response);
-                        if (response.status === 'connected') {
-                            console.log('https://www.facebook.com/app_scoped_user_id/' + response.authResponse.userID);
-                        }
-                    });
+                return function(response) {
+                    if (response != undefined && response.post_id != undefined) {
+                        var postInfo = response.post_id.split('_');
+                        self.setUserSocialData(postInfo[0], network);
+                    }
                 }
         }
     }

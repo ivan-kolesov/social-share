@@ -42,10 +42,16 @@ var Sharing = {
         facebook(this.options.facebook_app_id);
     },
     facebook: function (options, callback) {
-        return this._share("//www.facebook.com/sharer.php", {u: options.url}, callback);
+        FB.ui({
+            method: 'feed',
+            link: options.url,
+            name: options.title,
+            description: options.message,
+            picture: options.image
+        }, callback);
     },
     vkontakte: function (options, callback) {
-        return this._share("//vk.com/share.php", {
+        this._share("//vk.com/share.php", {
             url: options.url,
             title: options.title,
             description: options.message,
