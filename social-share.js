@@ -5,6 +5,7 @@ var Sharing = {
 
     init: function (options) {
         this.options = options || {};
+
         var vkontakte = function(appId) {
             window.vkAsyncInit = function() {
                 VK.init({
@@ -19,7 +20,6 @@ var Sharing = {
                 document.getElementById("vk_api_transport").appendChild(el);
             }, 0);
         };
-
         var facebook = function(appId) {
             window.fbAsyncInit = function() {
                 FB.init({
@@ -45,7 +45,7 @@ var Sharing = {
         FB.ui({
             method: 'feed',
             link: options.url,
-            name: options.title,
+            caption: options.title,
             description: options.message,
             picture: options.image
         }, callback);
