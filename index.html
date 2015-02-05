@@ -3,31 +3,64 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://vk.com/js/api/share.js?90" charset="windows-1251"></script>
 
     <script type="text/javascript">
         window.App = window.App || {};
         App.rootUrl = "https://mediamarkt.ru/promo/discount";
         App.metaTags = {
-            title: "Заголовок статьи",
-            description:"Описание статьи",
-            image:"http://www.aviasales.ru/promo/cities/uploads/share_photo/image/2_15.jpg",
-            vkontakte_image:"http://www.aviasales.ru/promo/cities/uploads/share_photo/image/vkontakte_2_15.jpg",
             vkontakte_app_id:4751704,
             fb_app_id:782954385087517
         };
     </script>
-    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="http://vk.com/js/api/share.js?90" charset="windows-1251"></script>
     <script src="/social-share.js" type="text/javascript"></script>
+    <script src="/social-share-manager.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            window.App = window.App || {};
+
+            $(document).on("click", ".js-share", function () {
+                var network = $(this).data("network");
+                if ("function" == typeof Sharing[network]) {
+                    var socialData = $(this).closest(".js-social-share-data");
+                    SharingManager.resetSharedData();
+                    SharingManager.setArticle(socialData.data('article'));
+
+                    Sharing[network]({
+                        url: location.href,
+                        title: socialData.data('title'),
+                        message: socialData.data('message'),
+                        image: socialData.data('image')
+                    }, SharingManager.getAfterSharingCallback(network));
+                }
+            });
+
+            Sharing.init();
+        });
+    </script>
+
 </head>
 <body>
 
     <div id="vk_api_transport"></div>
-    <div class="icon vk js-share" data-network="vkontakte" data-target="share_vk">VK</div>
-    <div class="js-vk_count">0</div>
+    <div id="fb-root"></div>
 
-    <div class="icon fb js-share" data-network="facebook" data-target="share_fb">FB</div>
-    <div class="js-fb_count">0</div>
+    <ul>
+        <li class="js-social-share-data"
+            data-article="884843"
+            data-title="Заголовок статьи"
+            data-description="Описание статьи"
+            data-image="http://www.aviasales.ru/promo/cities/uploads/share_photo/image/2_15.jpg">
+
+            <div>Товар 884843</div>
+            <div class="js-share" data-network="vkontakte">VK</div>
+            <div class="js-vk_count">0</div>
+
+            <div class="js-share" data-network="facebook">FB</div>
+            <div class="js-fb_count">0</div>
+        </li>
+    </ul>
 
 </body>
 </html>

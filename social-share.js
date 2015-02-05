@@ -1,9 +1,8 @@
 "use strict";
 var Sharing = {
     pageuri: App.rootUrl,
-    userInfo: {},
 
-    init: function () {
+    init: function (options) {
         var vkontakte = function(appId) {
             window.vkAsyncInit = function() {
                 VK.init({
@@ -48,16 +47,6 @@ var Sharing = {
         return this._share("//www.facebook.com/sharer.php", {u: options.url}, callback);
     },
     vkontakte: function (options, callback) {
-        callback = function() {
-            var self = this;
-
-            VK.Auth.getLoginStatus(function(response) {
-                if (response.session) {
-                    self.userInfo.userId = response.session.mid;
-                }
-            });
-        }.bind(this);
-
         return this._share("//vk.com/share.php", {
             url: options.url,
             title: options.title,
@@ -78,14 +67,6 @@ var Sharing = {
             return $(".js-vk_count").text(t);
         }, $.getJSON("//vk.com/share.php?act=count&index=1&url=" + this.pageuri + "&format=json&callback=?");
     },
-    resetUserInfo: function () {
-        this.userInfo = {};
-    },
-    _openUserInfoPopup: function () {
-    },
-    _saveUserInfo: function () {
-        console.log(this.userInfo);
-    },
     _share: function (baseUrl, params, callback) {
         var url = baseUrl + "?" + $.param(params);
         this.window = window.open(url, "Sharing", "width=740,height=440");
@@ -96,22 +77,3 @@ var Sharing = {
         }.bind(this), 500);
     }
 };
-
-$(function () {
-    window.App = window.App || {};
-
-    $(document).on("click", ".js-share", function () {
-        var network = $(this).data("network");
-        if ("function" == typeof Sharing[network]) {
-            Sharing.resetUserInfo();
-            Sharing[network]({
-                url: location.href,
-                title: App.metaTags.title,
-                message: App.metaTags.description,
-                image: App.metaTags.vkontakte_image
-            });
-        }
-    });
-
-    Sharing.init();
-});
