@@ -1,8 +1,10 @@
 "use strict";
 var Sharing = {
+    options: {},
     pageuri: App.rootUrl,
 
     init: function (options) {
+        this.options = options || {};
         var vkontakte = function(appId) {
             window.vkAsyncInit = function() {
                 VK.init({
@@ -18,7 +20,7 @@ var Sharing = {
             }, 0);
         };
 
-        var fb = function(appId) {
+        var facebook = function(appId) {
             window.fbAsyncInit = function() {
                 FB.init({
                     appId      : appId,
@@ -36,14 +38,10 @@ var Sharing = {
             }(document, 'script', 'facebook-jssdk'));
         };
 
-        vkontakte(App.metaTags.vkontakte_app_id);
-        fb(App.metaTags.fb_app_id);
+        vkontakte(this.options.vkontakte_app_id);
+        facebook(this.options.facebook_app_id);
     },
     facebook: function (options, callback) {
-        callback = function() {
-            this.fbCount();
-        }.bind(this);
-
         return this._share("//www.facebook.com/sharer.php", {u: options.url}, callback);
     },
     vkontakte: function (options, callback) {

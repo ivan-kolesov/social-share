@@ -41,6 +41,15 @@ var SharingManager = {
                         }
                     });
                 };
+            case "facebook":
+                return function() {
+                    FB.getLoginStatus(function(response) {
+                        console.log(response);
+                        if (response.status === 'connected') {
+                            console.log('https://www.facebook.com/app_scoped_user_id/' + response.authResponse.userID);
+                        }
+                    });
+                }
         }
     }
 };

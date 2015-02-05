@@ -9,17 +9,11 @@
     <script type="text/javascript">
         window.App = window.App || {};
         App.rootUrl = "https://mediamarkt.ru/promo/discount";
-        App.metaTags = {
-            vkontakte_app_id:4751704,
-            fb_app_id:782954385087517
-        };
     </script>
     <script src="/social-share.js" type="text/javascript"></script>
     <script src="/social-share-manager.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function () {
-            window.App = window.App || {};
-
             $(document).on("click", ".js-share", function () {
                 var network = $(this).data("network");
                 if ("function" == typeof Sharing[network]) {
@@ -36,7 +30,10 @@
                 }
             });
 
-            Sharing.init();
+            Sharing.init({
+                vkontakte_app_id:4751704,
+                facebook_app_id:782954385087517
+            });
         });
     </script>
 
