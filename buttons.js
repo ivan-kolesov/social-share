@@ -154,13 +154,13 @@
                 this.summary = this.config.alternativeSummary ? this.config.alternativeSummary : undefined;
             }
 
-            this.images = [];
+            this.image = [];
             if($images.length > 0 & !this.config.forceAlternativeImage) {
                 $images.each(function(index, element) {
-                    button.images[index] = element.src;
+                    button.image[index] = element.src;
                 });
             } else {
-                this.images[0] = this.config.alternativeImage ? this.config.alternativeImage : undefined;
+                this.image[0] = this.config.alternativeImage ? this.config.alternativeImage : undefined;
             }
         },
 
@@ -186,7 +186,7 @@
         linkToShare: null,
         title: d.title,
         summary: null,
-        images: [],
+        image: [],
 
         countServiceUrl: null,
         $context: null,
@@ -241,8 +241,8 @@
             getShareLink: function() {
                 var images = '';
 
-                for(var i in this.images) {
-                    images += ('&p[images][' + i +']=' + encodeURIComponent(this.images[i]));
+                for(var i in this.image) {
+                    images += ('&p[image][' + i +']=' + encodeURIComponent(this.image[i]));
                 }
 
                 return 'http://www.facebook.com/sharer/sharer.php?'
@@ -291,7 +291,7 @@
                     + 'url=' + encodeURIComponent(this.linkToShare)
                     + (sum ? '&description=' + encodeURIComponent(sum) : '')
                     + '&title=' + encodeURIComponent(this.title)
-                    + '&image=' + encodeURIComponent(this.images[0]);
+                    + '&image=' + encodeURIComponent(this.image[0]);
             },
 
             /*@properties*/
